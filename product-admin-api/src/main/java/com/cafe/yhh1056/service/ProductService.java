@@ -38,4 +38,13 @@ public class ProductService {
     public Product addProduct(Product product) {
         return productRepository.save(product);
     }
+
+    public Product updateProduct(Long id,String name, String memo, Long price) {
+
+       Product product = productRepository.findById(id).orElse(null);
+       if(product != null) {
+           product.updateInfo(name, memo, price);
+       }
+        return product;
+    }
 }

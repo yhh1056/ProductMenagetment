@@ -19,8 +19,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -108,5 +108,26 @@ class ProductControllerTests {
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location", "/products/1000"));
+    }
+
+    @Test
+    void update() throws Exception {
+        Product updateProduct = Product.builder()
+                .id(1000L)
+                .name("deCoffee beans")
+                .date("2020/6/21")
+                .memo("x")
+                .price(130000L).build();
+
+        given(productService.updateProduct(1000L, "deCoffee beans", "x", 130000L))
+                .willReturn(updateProduct);
+
+        mvc.perform(patch("/product/1000")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updateProduct)))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        verify(productService).updateProduct(any(), any(), any(), any());
     }
 }

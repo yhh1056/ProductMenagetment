@@ -37,4 +37,10 @@ public class Product {
     private Long price;
 
     private String memo;
+
+    public void updateInfo(String name, String memo, Long price) {
+        this.name = name;
+        this.memo = memo;
+        this.price = price;
+    }
 }
