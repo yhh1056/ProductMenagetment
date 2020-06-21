@@ -1,10 +1,11 @@
 package com.cafe.yhh1056.controller;
 
 import com.cafe.yhh1056.domain.Product;
+import com.cafe.yhh1056.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,15 +18,12 @@ import java.util.List;
 @RestController
 public class ProductController {
 
+    @Autowired
+    private ProductService productService;
+
     @GetMapping("/products")
     public List<Product> list() {
-        List<Product> products = new ArrayList<>();
-
-        Product product = Product.builder().name("coffee beans").build();
-
-        products.add(product);
-
-        return products;
+       return productService.getProducts();
     }
 
 
