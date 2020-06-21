@@ -1,1 +1,3 @@
 rootProject.name = 'yhh1056'
+include 'product-admin-api'
+
