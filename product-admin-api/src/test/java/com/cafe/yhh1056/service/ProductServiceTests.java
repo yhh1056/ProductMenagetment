@@ -15,6 +15,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 /**
@@ -59,6 +60,23 @@ class ProductServiceTests {
                 () -> assertEquals("memo", product.getMemo()),
                 () -> assertEquals("2020/6/12", product.getDate()),
                 () -> assertEquals(12000L, product.getPrice())
+        );
+    }
+
+    @Test
+    void createProduct() {
+        Product mockProduct = Product.builder().id(1000L).name("beans").memo("memo").date("2020/6/12").price(12000L).build();
+
+        when(productRepository.save(any())).thenReturn(mockProduct);
+
+        Product result = productService.addProduct(mockProduct);
+
+        assertAll(
+                () -> assertThat(result.getId()).isEqualTo(1000L),
+                () -> assertThat(result.getName()).isEqualTo("beans"),
+                () -> assertThat(result.getMemo()).isEqualTo("memo"),
+                () -> assertThat(result.getDate()).isEqualTo("2020/6/12"),
+                () -> assertThat(result.getPrice()).isEqualTo(12000L)
         );
     }
 }
