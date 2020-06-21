@@ -21,11 +21,15 @@ class ProductTests {
     void create() {
         List<Product> products = new ArrayList<>();
 
-        Product product = Product.builder().name("원두").build();
-
+        Product product = Product.builder().name("원두").date("2020/6/21").memo("메모").price(120000L).build();
         products.add(product);
 
-        assertThat(products.get(0).getName(), is("원두"));
+        assertAll(
+                () -> assertEquals("원두", product.getName()),
+                () -> assertEquals("2020/6/21", product.getDate()),
+                () -> assertEquals("메모", product.getMemo()),
+                () -> assertEquals(120000L, product.getPrice())
+        );
     }
 
 }

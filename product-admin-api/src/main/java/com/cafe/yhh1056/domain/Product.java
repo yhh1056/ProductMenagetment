@@ -28,4 +28,10 @@ public class Product {
     private Long id;
 
     private String name;
+
+    private String date;           //todo 현재 시간으로 변경하기
+
+    private Long price;
+
+    private String memo;
 }
