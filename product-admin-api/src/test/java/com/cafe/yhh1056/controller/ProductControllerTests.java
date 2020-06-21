@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * product controller test
- * <p>
+ *
  * author {yhh1056}
  * Create by {2020/06/21}
  */
@@ -37,24 +37,23 @@ class ProductControllerTests {
     void list() throws Exception {
         List<Product> products = new ArrayList<>();
 
-        Product productCoffee = Product.builder()
+        Product productByCoffee = Product.builder()
                 .name("coffee beans")
                 .date("2020/6/21")
                 .memo("memo")
                 .price(120000L)
                 .build();
+        products.add(productByCoffee);
 
-        Product productPowder = Product.builder()
+        Product productByPowder = Product.builder()
                 .name("vanilla powder")
                 .date("2020/6/22")
                 .memo("full")
                 .price(18000L)
                 .build();
+        products.add(productByPowder);
 
-        products.add(productCoffee);
-        products.add(productPowder);
-
-        given(productService.getProducts()).willReturn(products);
+        given(productService.getAllProducts()).willReturn(products);
 
         mvc.perform(get("/products"))
                 .andExpect(status().isOk())
@@ -64,5 +63,22 @@ class ProductControllerTests {
                 .andExpect(content().string(containsString("vanilla powder")))
                 .andExpect(content().string(containsString("2020/6/22")))
                 .andExpect(content().string(containsString("full")));
+    }
+
+    @Test
+    void detail() throws Exception {
+        Product productByCoffee = Product.builder()
+                .id(1000L)
+                .name("coffee beans")
+                .date("2020/6/21")
+                .memo("memo")
+                .price(120000L)
+                .build();
+
+        given(productService.getProductInfo(1000L)).willReturn(productByCoffee);
+
+        mvc.perform(get("/product/1000"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("coffee beans")));
     }
 }

@@ -10,8 +10,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 /**
@@ -29,7 +32,7 @@ class ProductServiceTests {
     private ProductRepository productRepository;
 
     @Test
-    void getProducts() {
+    void getAllProducts() {
         List<Product> mockProducts = new ArrayList<>();
 
         mockProducts.add(Product.builder().id(1000L).name("beans").memo("memo").date("2020/6/12").price(12000L).build());
@@ -37,9 +40,25 @@ class ProductServiceTests {
 
         when(productRepository.findAll()).thenReturn(mockProducts);
 
-        List<Product> products = productService.getProducts();
+        List<Product> products = productService.getAllProducts();
 
         assertThat(products.get(0).getName()).isEqualTo("beans");
         assertThat(products.get(1).getName()).isEqualTo("powder");
+    }
+
+    @Test
+    void getProductInfo() {
+
+        Product mockProduct = Product.builder().id(1000L).name("beans").memo("memo").date("2020/6/12").price(12000L).build();
+        when(productRepository.findById(1000L)).thenReturn(Optional.of(mockProduct));
+
+        Product product = productService.getProductInfo(1000L);
+
+        assertAll(
+                () -> assertEquals("beans", product.getName()),
+                () -> assertEquals("memo", product.getMemo()),
+                () -> assertEquals("2020/6/12", product.getDate()),
+                () -> assertEquals(12000L, product.getPrice())
+        );
     }
 }
