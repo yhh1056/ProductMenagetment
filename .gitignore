@@ -4,15 +4,6 @@ build/
 !**/src/main/**
 !**/src/test/**
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
 ### IntelliJ IDEA ###
 .idea
 *.iws
@@ -26,10 +17,6 @@ out/
 /dist/
 /nbdist/
 /.nb-gradle/
-
-### VS Code ###
-.vscode/
-
 
 # Created by https://www.toptal.com/developers/gitignore/api/macos,java,gradle,intellij
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,java,gradle,intellij
