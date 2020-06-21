@@ -49,4 +49,14 @@ public class ProductController {
 
         return ResponseEntity.created(new URI(url)).body("{}");
     }
+
+    @PatchMapping("product/{id}")
+    public String update(@PathVariable Long id,
+                         @RequestBody Product resource) {
+        String name = resource.getName();
+        String memo = resource.getMemo();
+        Long price = resource.getPrice();
+        productService.updateProduct(id, name, memo, price);
+        return "{변경 완료}";
+    }
 }

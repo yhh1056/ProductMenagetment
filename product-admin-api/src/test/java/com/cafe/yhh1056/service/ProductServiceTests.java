@@ -79,4 +79,19 @@ class ProductServiceTests {
                 () -> assertThat(result.getPrice()).isEqualTo(12000L)
         );
     }
+
+    @Test
+    void updateProduct() {
+        Product mockProduct = Product.builder().id(1000L).name("beans").memo("memo").date("2020/6/12").price(12000L).build();
+
+        when(productRepository.findById(any())).thenReturn(Optional.of(mockProduct));
+
+        Product result = productService.updateProduct(1000L, "deBeans", "x", 13000L);
+
+        assertAll(
+                () -> assertThat(result.getName()).isEqualTo("deBeans"),
+                () -> assertThat(result.getMemo()).isEqualTo("x"),
+                () -> assertThat(result.getPrice()).isEqualTo(13000L)
+        );
+    }
 }
