@@ -29,7 +29,10 @@ public class Product {
 
     private String name;
 
-    private String date;           //todo 현재 시간으로 변경하기
+    /**
+     *  현재 시간으로 변경하기
+     */
+    private String date;
 
     private Long price;
 
