@@ -10,8 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 /**
- * 클레스 설명
- * <p>
+ * Product
+ *
  * author {yhh1056}
  * Create by {2020/06/21}
  */
