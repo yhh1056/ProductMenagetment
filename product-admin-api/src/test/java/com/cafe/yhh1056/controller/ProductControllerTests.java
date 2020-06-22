@@ -1,7 +1,6 @@
 package com.cafe.yhh1056.controller;
 
 import com.cafe.yhh1056.domain.Product;
-import com.cafe.yhh1056.repository.ProductRepository;
 import com.cafe.yhh1056.service.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -11,11 +10,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -118,11 +115,11 @@ class ProductControllerTests {
         Product updateProduct = Product.builder()
                 .id(1000L)
                 .name("deCoffee beans")
-                .date("2020/6/21")
                 .memo("x")
+                .date("2020/6/21")
                 .price(130000L).build();
 
-        given(productService.updateProduct(1000L, "deCoffee beans", "x", 130000L))
+        given(productService.updateProduct(1000L, "deCoffee beans", "x", 130000L, 12L))
                 .willReturn(updateProduct);
 
         mvc.perform(patch("/product/1000")
@@ -131,6 +128,28 @@ class ProductControllerTests {
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        verify(productService).updateProduct(any(), any(), any(), any());
+        verify(productService).updateProduct(any(), any(), any(), any(), any());
+    }
+
+    @Test
+    void updateQuantity() throws Exception {
+        Product updateProduct = Product.builder()
+                .id(1000L)
+                .name("deCoffee beans")
+                .date("2020/6/21")
+                .memo("x")
+                .quantity(12L)
+                .price(130000L).build();
+
+        given(productService.updateProduct(1000L,12L))
+                .willReturn(updateProduct);
+
+        mvc.perform(patch("/product/1000/quantity")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updateProduct)))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        verify(productService).updateProduct(any(), any());
     }
 }

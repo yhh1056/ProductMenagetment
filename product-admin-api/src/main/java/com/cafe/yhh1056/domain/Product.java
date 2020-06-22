@@ -45,9 +45,14 @@ public class Product {
     @NotNull
     private Long quantity;
 
-    public void updateInfo(String name, String memo, Long price) {
+    public void updateInfo(String name, String memo, Long price, Long quantity) {
         this.name = name;
         this.memo = memo;
         this.price = price;
+        this.quantity = quantity;
+    }
+
+    public void updateQuantity(Long quantity) {
+        this.quantity = quantity;
     }
 }

@@ -49,7 +49,7 @@ public class ProductController {
 
         String url = "/products/" + product.getId();
 
-        return ResponseEntity.created(new URI(url)).body("{추가 완료}");
+        return ResponseEntity.created(new URI(url)).body("{추가 완}");
     }
 
     @PatchMapping("product/{id}")
@@ -58,7 +58,19 @@ public class ProductController {
         String name = resource.getName();
         String memo = resource.getMemo();
         Long price = resource.getPrice();
-        productService.updateProduct(id, name, memo, price);
-        return "{변경 완료}";
+        Long quantity = resource.getQuantity();
+        productService.updateProduct(id, name, memo, price, quantity);
+        return "{수정 완료}";
+    }
+
+    /**
+     * 직원 기
+     */
+    @PatchMapping("product/{id}/quantity")
+    public String updateQuantity(@PathVariable Long id,
+                         @Valid @RequestBody Product resource) {
+        Long quantity = resource.getQuantity();
+        productService.updateProduct(id, quantity);
+        return "{수정 완료}";
     }
 }
