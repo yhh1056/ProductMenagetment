@@ -52,6 +52,7 @@ class ProductControllerTests {
                 .date("2020/6/21")
                 .memo("memo")
                 .price(120000L)
+                .quantity(12L)
                 .build();
         products.add(productByCoffee);
 
@@ -60,6 +61,7 @@ class ProductControllerTests {
                 .date("2020/6/22")
                 .memo("full")
                 .price(18000L)
+                .quantity(6L)
                 .build();
         products.add(productByPowder);
 
@@ -99,6 +101,7 @@ class ProductControllerTests {
                 .name("coffee beans")
                 .date("2020/6/21")
                 .memo("memo")
+                .quantity(6L)
                 .price(120000L).build();
         given(productService.addProduct(any())).willReturn(mockProduct);
 

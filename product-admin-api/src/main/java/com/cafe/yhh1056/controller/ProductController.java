@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -36,23 +37,24 @@ public class ProductController {
     }
 
     @PostMapping("/products")
-    public ResponseEntity<?> create(@RequestBody Product resource) throws URISyntaxException {
+    public ResponseEntity<?> create(@Valid @RequestBody Product resource) throws URISyntaxException {
         Product product = productService.addProduct(
                 Product.builder()
                         .name(resource.getName())
                         .memo(resource.getMemo())
                         .date(resource.getDate())
                         .price(resource.getPrice())
+                        .quantity(resource.getQuantity())
                         .build());
 
         String url = "/products/" + product.getId();
 
-        return ResponseEntity.created(new URI(url)).body("{}");
+        return ResponseEntity.created(new URI(url)).body("{추가 완료}");
     }
 
     @PatchMapping("product/{id}")
     public String update(@PathVariable Long id,
-                         @RequestBody Product resource) {
+                         @Valid @RequestBody Product resource) {
         String name = resource.getName();
         String memo = resource.getMemo();
         Long price = resource.getPrice();

@@ -2,11 +2,14 @@ package com.cafe.yhh1056.service;
 
 import com.cafe.yhh1056.domain.Product;
 import com.cafe.yhh1056.repository.ProductRepository;
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +27,7 @@ import static org.mockito.Mockito.when;
  * author {yhh1056}
  * Create by {2020/06/21}
  */
+
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTests {
     @InjectMocks
@@ -31,6 +35,12 @@ class ProductServiceTests {
 
     @Mock
     private ProductRepository productRepository;
+
+    @BeforeEach
+    public void setUp() {
+        productService = new ProductService(productRepository);
+
+    }
 
     @Test
     void getAllProducts() {
