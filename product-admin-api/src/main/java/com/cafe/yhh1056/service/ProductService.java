@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * ProductService
- *
+ * <p>
  * author {yhh1056}
  * Create by {2020/06/21}
  */
@@ -19,9 +19,9 @@ import java.util.List;
 @Transactional
 public class ProductService {
 
-   private ProductRepository productRepository;
+    private ProductRepository productRepository;
 
-   @Autowired
+    @Autowired
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
@@ -39,12 +39,21 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public Product updateProduct(Long id,String name, String memo, Long price) {
+    public Product updateProduct(Long id, String name, String memo, Long price, Long quantity) {
 
-       Product product = productRepository.findById(id).orElse(null);
-       if(product != null) {
-           product.updateInfo(name, memo, price);
-       }
+        Product product = productRepository.findById(id).orElse(null);
+        if (product != null) {
+            product.updateInfo(name, memo, price, quantity);
+        }
+        return product;
+    }
+
+    public Product updateProduct(Long id, Long quantity) {
+
+        Product product = productRepository.findById(id).orElse(null);
+        if (product != null) {
+            product.updateQuantity(quantity);
+        }
         return product;
     }
 }

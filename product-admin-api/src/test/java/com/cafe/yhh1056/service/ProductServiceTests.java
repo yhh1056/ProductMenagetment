@@ -2,6 +2,7 @@ package com.cafe.yhh1056.service;
 
 import com.cafe.yhh1056.domain.Product;
 import com.cafe.yhh1056.repository.ProductRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,10 +21,11 @@ import static org.mockito.Mockito.when;
 
 /**
  * ProductServiceTests
- *
+ * <p>
  * author {yhh1056}
  * Create by {2020/06/21}
  */
+
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTests {
     @InjectMocks
@@ -31,6 +33,12 @@ class ProductServiceTests {
 
     @Mock
     private ProductRepository productRepository;
+
+    @BeforeEach
+    public void setUp() {
+        productService = new ProductService(productRepository);
+
+    }
 
     @Test
     void getAllProducts() {
@@ -82,16 +90,28 @@ class ProductServiceTests {
 
     @Test
     void updateProduct() {
-        Product mockProduct = Product.builder().id(1000L).name("beans").memo("memo").date("2020/6/12").price(12000L).build();
+        Product mockProduct = Product.builder().id(1000L).name("beans").memo("memo").date("2020/6/12").price(12000L).quantity(10L).build();
 
         when(productRepository.findById(any())).thenReturn(Optional.of(mockProduct));
 
-        Product result = productService.updateProduct(1000L, "deBeans", "x", 13000L);
+        Product result = productService.updateProduct(1000L, "deBeans", "x", 13000L, 6L);
 
         assertAll(
                 () -> assertThat(result.getName()).isEqualTo("deBeans"),
                 () -> assertThat(result.getMemo()).isEqualTo("x"),
-                () -> assertThat(result.getPrice()).isEqualTo(13000L)
+                () -> assertThat(result.getPrice()).isEqualTo(13000L),
+                () -> assertThat(result.getQuantity()).isEqualTo(6L)
         );
+    }
+
+    @Test
+    void updateQuantity() {
+        Product mockProduct = Product.builder().id(1000L).name("beans").memo("memo").date("2020/6/12").price(12000L).quantity(10L).build();
+
+        when(productRepository.findById(any())).thenReturn(Optional.of(mockProduct));
+
+        Product result = productService.updateProduct(1000L, 6L);
+
+        assertThat(result.getQuantity()).isEqualTo(6L);
     }
 }
