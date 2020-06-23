@@ -1,6 +1,7 @@
 package com.cafe.yhh1056.controller;
 
 import com.cafe.yhh1056.domain.Product;
+import com.cafe.yhh1056.domain.exception.ProductNotFoundException;
 import com.cafe.yhh1056.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
