@@ -29,4 +29,10 @@ public class UserService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+    public User addUser(String name, String email, String password) {
+        User user = User.builder().name(name).email(email).password(password).build();
+
+        return userRepository.save(user);
+    }
 }
