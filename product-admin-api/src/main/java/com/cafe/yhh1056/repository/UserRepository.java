@@ -13,7 +13,6 @@ import java.util.Optional;
  * author {yhh1056}
  * Create by {2020/06/23}
  */
-@Repository
 public interface UserRepository extends CrudRepository<User, Long> {
     List<User> findAll();
 
