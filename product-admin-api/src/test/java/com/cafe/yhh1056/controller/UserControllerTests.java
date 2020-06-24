@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * user controller test code
- * <p>
+ *
  * author {yhh1056}
  * Create by {2020/06/23}
  */
@@ -62,7 +62,7 @@ class UserControllerTests {
     }
 
     @Test
-    void createUser() throws Exception {
+    void registerUser() throws Exception {
         User mockUser = User.builder().id(1000L).name("tester").email("tester@test.com").password("test123").build();
 
         when(userService.memberRegister(any(), any(), any())).thenReturn(mockUser);
@@ -72,6 +72,17 @@ class UserControllerTests {
                 .content(objectMapper.writeValueAsString(mockUser)))
                 .andExpect(status().isCreated())
                 .andExpect(content().string("success register"))
+                .andDo(print());
+    }
+
+    @Test
+    void registerUserWithExistEmail() throws Exception {
+        User mockUser = User.builder().id(1000L).name("tester").email("tester@test.com").password("test123").build();
+
+        when(userService.memberRegister("yhh1056", "tester@test.com", "test123")).thenReturn(mockUser);
+
+        mvc.perform(post("/users"))
+                .andExpect(status().isBadRequest())
                 .andDo(print());
     }
 }
