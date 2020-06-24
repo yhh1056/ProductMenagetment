@@ -1,6 +1,7 @@
 package com.cafe.yhh1056.service;
 
 import com.cafe.yhh1056.domain.Product;
+import com.cafe.yhh1056.domain.exception.ProductNotFoundException;
 import com.cafe.yhh1056.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class ProductService {
 
     public Product getProductInfo(Long id) {
 
-        return productRepository.findById(id).orElse(null);
+        return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
     }
 
     public Product addProduct(Product product) {

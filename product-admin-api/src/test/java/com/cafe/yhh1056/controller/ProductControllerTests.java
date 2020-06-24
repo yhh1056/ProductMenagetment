@@ -98,6 +98,7 @@ class ProductControllerTests {
 
         mvc.perform(get("/product/404"))
                 .andExpect(status().isNotFound())
+                .andDo(print())
                 .andExpect(content().string("Not Found"));
     }
 
