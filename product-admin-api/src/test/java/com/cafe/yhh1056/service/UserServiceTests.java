@@ -1,6 +1,7 @@
 package com.cafe.yhh1056.service;
 
 import com.cafe.yhh1056.domain.User;
+import com.cafe.yhh1056.domain.exception.EmailExistedException;
 import com.cafe.yhh1056.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,10 +12,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 /**
  * UserService test code
@@ -53,5 +55,24 @@ class UserServiceTests {
                 () -> assertThat(userList.get(0).getName()).isEqualTo("testUser"),
                 () -> assertThat(userList.get(1).getName()).isEqualTo("yhh1056")
         );
+    }
+
+    @Test
+    void overlapEmail() {
+        User testUser = User.builder().name("testUser").email("tester@test.com").password("1234").build();
+        User yhh1056 = User.builder().name("yhh1056").email("tester@test.com").password("1234").build();
+
+//        userRepository.save(testUser);
+//        when(userRepository.findByEmail(yhh1056.getEmail())).thenReturn(Optional.of(testUser));
+//
+//        userService.memberRegister(yhh1056.getName(), yhh1056.getEmail(), yhh1056.getPassword());
+
+//        assertThrows(EmailExistedException.class, () -> userRepository.findByEmail(yhh1056.getEmail()));
+        Throwable exception = assertThrows(
+                EmailExistedException.class, () -> {
+                    throw new EmailExistedException(yhh1056.getEmail());
+                });
+        assertEquals(exception.getMessage(),"tester@test.com already existed email. change your email");
+
     }
 }

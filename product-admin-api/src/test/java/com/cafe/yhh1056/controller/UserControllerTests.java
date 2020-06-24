@@ -65,7 +65,7 @@ class UserControllerTests {
     void createUser() throws Exception {
         User mockUser = User.builder().id(1000L).name("tester").email("tester@test.com").password("test123").build();
 
-        when(userService.addUser(any(), any(), any())).thenReturn(mockUser);
+        when(userService.memberRegister(any(), any(), any())).thenReturn(mockUser);
 
         mvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)

@@ -22,6 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/users")
+@CrossOrigin
 public class UserController {
 
     @Autowired
@@ -40,7 +41,7 @@ public class UserController {
                 .password(resource.getPassword())
                 .build();
 
-        userService.addUser(user.getName(), user.getEmail(), user.getPassword());
+        userService.memberRegister(user.getName(), user.getEmail(), user.getPassword());
 
         String uri = "user/" + user.getId();
         return ResponseEntity.created(new URI(uri)).body("success register");
