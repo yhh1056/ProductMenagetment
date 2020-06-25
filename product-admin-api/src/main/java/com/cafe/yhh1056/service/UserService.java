@@ -40,6 +40,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public User getUserInfo(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
     public User memberRegister(String name, String email, String password) {
         Optional<User> overlap = userRepository.findByEmail(email);
         if(overlap.isPresent()) {

@@ -9,6 +9,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 /**
@@ -33,9 +36,12 @@ class UserServiceTests {
     @Mock
     private UserRepository userRepository;
 
+    @MockBean
+    private PasswordEncoder passwordEncoder;
+
     @BeforeEach
     public void setUp() {
-        userService = new UserService(userRepository);
+        userService = new UserService(userRepository, passwordEncoder);
     }
 
     @Test
@@ -58,21 +64,37 @@ class UserServiceTests {
     }
 
     @Test
-    void overlapEmail() {
-        User testUser = User.builder().name("testUser").email("tester@test.com").password("1234").build();
+    void getUserInfo() {
+        User mockUser = User.builder().id(1000L).name("test").email("test@test.com").build();
+
+        when(userRepository.findById(1000L)).thenReturn(Optional.of(mockUser));
+
+        User user = userService.getUserInfo(1000L);
+
+        assertThat(user.getName()).isEqualTo("test");
+    }
+
+    @Test
+    void registerUser() {
+        User mockUser = User.builder().name("tester").email("test@test.com").password("test123").build();
+
+        when(userRepository.save(any())).thenReturn(mockUser);
+
+        User user = userService.memberRegister("mock", "mock", "mock");
+
+        assertThat(user.getEmail()).isEqualTo("test@test.com");
+    }
+
+    @Test
+    void existedEmail() {
         User yhh1056 = User.builder().name("yhh1056").email("tester@test.com").password("1234").build();
 
-//        userRepository.save(testUser);
-//        when(userRepository.findByEmail(yhh1056.getEmail())).thenReturn(Optional.of(testUser));
-//
-//        userService.memberRegister(yhh1056.getName(), yhh1056.getEmail(), yhh1056.getPassword());
-
-//        assertThrows(EmailExistedException.class, () -> userRepository.findByEmail(yhh1056.getEmail()));
         Throwable exception = assertThrows(
                 EmailExistedException.class, () -> {
                     throw new EmailExistedException(yhh1056.getEmail());
                 });
-        assertEquals(exception.getMessage(),"tester@test.com already existed email. change your email");
-
+        assertEquals(exception.getMessage(), "tester@test.com already existed email. change your email");
     }
+
+
 }

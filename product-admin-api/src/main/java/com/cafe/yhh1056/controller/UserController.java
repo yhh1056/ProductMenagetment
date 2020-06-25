@@ -21,19 +21,23 @@ import java.util.List;
  * 유저 삭제 (등급 낮춰서 활동 할 수없게)
  */
 @RestController
-@RequestMapping(value = "/users")
 @CrossOrigin
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping
+    @GetMapping("/users")
     public List<User> list() {
         return userService.getAllUsers();
     }
 
-    @PostMapping
+    @GetMapping("/user/{id}")
+    public User detail(@PathVariable Long id) {
+        return userService.getUserInfo(id);
+    }
+
+    @PostMapping("/users")
     public ResponseEntity<?> create(@RequestBody User resource) throws URISyntaxException {
         User user = User.builder()
                 .name(resource.getName())
